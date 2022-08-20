@@ -8,7 +8,7 @@
 import Foundation
 //https://zoo-animal-api.herokuapp.com/animals/rand/10
 
-struct AnimalModel: Codable, Identifiable {
+struct AnimalModel: Decodable, Identifiable {
     let name: String
     let latinName: String
     let animalType: String

@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct AnimeInstanceModel: Codable {
+struct AnimeInstanceModel: Decodable {
     let animeId: Int
     let animeName: String
     let animeImg: String
 }
 
-struct AnimeListModel: Codable {
+struct AnimeListModel: Decodable {
     let success: Bool
     let data: [AnimeInstanceModel]
 }
