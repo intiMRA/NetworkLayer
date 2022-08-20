@@ -14,6 +14,7 @@ protocol EncoderProtocol {
     func encode<T>(_ value: T) throws -> Data where T : Encodable
 }
 extension JSONDecoder: DecoderProtocol {}
+extension JSONEncoder: EncoderProtocol {}
 
 enum HTTPMethod: String {
     case GET
@@ -35,11 +36,7 @@ enum DataFetcherUtils {
 }
 
 extension Encodable {
-    func encode(encoder: EncoderProtocol? = nil) -> Data? {
-        guard let encoder = encoder else {
-            return try? DataFetcherUtils.encoder.encode(self)
-        }
-        
+    func encode(encoder: EncoderProtocol) -> Data? {
         return try? encoder.encode(self)
     }
 }
@@ -55,11 +52,12 @@ struct DataFetcherRequest {
                 headers: [String: String]? = nil,
                 reqBody: Encodable? = nil,
                 reqTimeout: Float? = nil,
-                httpMethod: HTTPMethod
+                httpMethod: HTTPMethod,
+                encoder: EncoderProtocol = DataFetcherUtils.encoder
     ) {
         self.url = url
         self.headers = headers
-        self.body = reqBody?.encode()
+        self.body = reqBody?.encode(encoder: encoder)
         self.requestTimeOut = reqTimeout
         self.httpMethod = httpMethod
     }
